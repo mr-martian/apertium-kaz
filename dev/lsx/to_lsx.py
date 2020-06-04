@@ -27,7 +27,8 @@ def make_entry(join, parts):
     found = False
     tags = '<' + join.split('<', 1)[-1]
     join_lem = join.split(':')[-1].split('<')[0]
-    for p in parts:
+    lsx_lem = join_lem.replace(' ', '<b/>')
+    for p in reversed(parts):
         readings = p.split('/')[1:]
         if not readings:
             print(join)
@@ -39,7 +40,7 @@ def make_entry(join, parts):
                     lem = r.split('<')[0]
                     first_tag = r.split('<')[1].split('>')[0]
                     sdefs.add(first_tag)
-                    ln = f'<p><l>{lem}<s n="{first_tag}"/></l><r>{join_lem}<s n="{first_tag}"/></r></p><i><t/><j/></i>'
+                    ln = f'<p><l>{lem}<s n="{first_tag}"/></l><r>{lsx_lem}<s n="{first_tag}"/></r></p><i><t/><j/></i>'
                     ls.append(ln)
                     break
         else:
@@ -52,7 +53,7 @@ def make_entry(join, parts):
     if not found:
         return None
     else:
-        blob = '\n      '.join(ls)
+        blob = '\n      '.join(reversed(ls))
         return f'<e lm="{join_lem}">\n      {blob}\n    </e>'
 
 ents = []
